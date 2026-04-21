@@ -15,3 +15,12 @@ def get_db_engine():
     except Exception as e:
         print(f"❌ Error creating database engine: {str(e)}")
         raise
+
+def print_db_tables(engine, schema_name='source_data'):
+    """Print the list of tables in the specified schema."""
+    with engine.connect() as conn:
+        result = conn.execute(sa.text(f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema_name}';"))
+        tables = result.fetchall()
+        print(f"\n✓ Tables in '{schema_name}' schema:")
+        for table in tables:
+            print(f"  - {table[0]}")
