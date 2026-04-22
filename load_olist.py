@@ -20,7 +20,7 @@ def load_csv_to_db(engine, csv_file, table_name, schema_name='source_data'):
             table_name,
             engine,
             schema=schema_name,
-            if_exists='replace',  # Use 'append' to add to existing table
+            if_exists='replace',
             index=False,
             chunksize=1000 # Load in chunks to handle large files
         )

@@ -19,7 +19,10 @@ def get_db_engine():
 def print_db_tables(engine, schema_name='source_data'):
     """Print the list of tables in the specified schema."""
     with engine.connect() as conn:
-        result = conn.execute(sa.text(f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema_name}';"))
+        result = conn.execute(sa.text(f"""
+                            SELECT table_name 
+                            FROM information_schema.tables
+                            WHERE table_schema = '{schema_name}';"""))
         tables = result.fetchall()
         print(f"\n✓ Tables in '{schema_name}' schema:")
         for table in tables:

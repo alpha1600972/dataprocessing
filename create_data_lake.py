@@ -259,13 +259,6 @@ def query_raw_zone_examples(engine, schema_name='raw_zone'):
         print(f"\n{description}:")
         print(f"  {query}")
 
-def create_table_row_zone(engine, table_name, schema_name='row_zone'):
-    """
-    Create a normalized table in row_zone (processed data).
-    This is for flattened, normalized data after transformation from raw_zone.
-    """
-    pass
-
 def main():
     """
     Main function to orchestrate data lake creation:
@@ -282,24 +275,21 @@ def main():
     engine = get_db_engine()
     
     # Step 1: Create metadata table
-    # print("\n[Step 1] Creating metadata table...")
-    # create_metadata_table(engine, 'raw_zone')
+    print("\n[Step 1] Creating metadata table...")
+    create_metadata_table(engine, 'raw_zone')
     
-    # # Step 2: Load all source data into raw_zone as JSONB
-    # print("\n[Step 2] Loading source data into raw zone...")
-    # load_source_data_to_raw_zone(engine, 'source_data', 'raw_zone')
+    # Step 2: Load all source data into raw_zone as JSONB
+    print("\n[Step 2] Loading source data into raw zone...")
+    load_source_data_to_raw_zone(engine, 'source_data', 'raw_zone')
     
-    # # Step 3: Show query examples
-    # query_raw_zone_examples(engine, 'raw_zone')
+    # Step 3: Show query examples
+    query_raw_zone_examples(engine, 'raw_zone')
     
-    # print("\n" + "="*70)
-    # print("✓ Raw zone created successfully!")
-    # print("="*70)
-    # print("\nNext steps:")
-    # print("  1. Access JSONB data: SELECT data FROM raw_zone.<table_name>_raw;")
-    # print("  2. Extract fields: SELECT data->>'field_name' FROM raw_zone.<table>_raw;")
-    # print("  3. Query examples shown above for advanced JSONB operations")
-    # print("\n")
-
-if __name__ == "__main__":
-    main()
+    print("\n" + "="*70)
+    print("✓ Raw zone created successfully!")
+    print("="*70)
+    print("\nNext steps:")
+    print("  1. Access JSONB data: SELECT data FROM raw_zone.<table_name>_raw;")
+    print("  2. Extract fields: SELECT data->>'field_name' FROM raw_zone.<table>_raw;")
+    print("  3. Query examples shown above for advanced JSONB operations")
+    print("\n")

@@ -56,7 +56,7 @@ python3 create_data_lake.py
 #### Get all original data from a table
 ```sql
 SELECT data 
-FROM raw_zone.olist_customers_raw 
+FROM raw_zone.olist_customers_dataset_raw 
 LIMIT 5;
 ```
 
@@ -67,7 +67,7 @@ SELECT
     data->>'customer_id' as customer_id,
     data->>'customer_city' as city,
     loaded_at
-FROM raw_zone.olist_customers_raw
+FROM raw_zone.olist_customers_dataset_raw
 LIMIT 10;
 ```
 
@@ -83,14 +83,14 @@ FROM raw_zone.olist_customers_raw;
 #### Filter by JSON field
 ```sql
 SELECT COUNT(*) 
-FROM raw_zone.olist_customers_raw 
+FROM raw_zone.olist_customers_dataset_raw 
 WHERE data->>'state' = 'SP';
 ```
 
 #### Use JSON containment operator
 ```sql
 SELECT raw_id, data
-FROM raw_zone.olist_customers_raw
+FROM raw_zone.olist_customers_dataset_raw
 WHERE data @> '{"state": "SP"}'::jsonb;
 ```
 
@@ -99,7 +99,7 @@ WHERE data @> '{"state": "SP"}'::jsonb;
 #### Get all keys in a JSON object
 ```sql
 SELECT DISTINCT jsonb_object_keys(data) as fields
-FROM raw_zone.olist_customers_raw
+FROM raw_zone.olist_customers_dataset_raw
 LIMIT 1;
 ```
 
@@ -108,7 +108,7 @@ LIMIT 1;
 SELECT 
     raw_id,
     jsonb_pretty(data) as formatted_data
-FROM raw_zone.olist_customers_raw
+FROM raw_zone.olist_customers_dataset_raw
 LIMIT 1;
 ```
 
@@ -124,7 +124,7 @@ WHERE data ? 'attributes';
 #### Check if key exists
 ```sql
 SELECT COUNT(*) 
-FROM raw_zone.olist_customers_raw
+FROM raw_zone.olist_customers_dataset_raw
 WHERE data ? 'optional_field';
 ```
 
@@ -138,7 +138,7 @@ SELECT
     data->>'customer_city' as city,
     data->>'customer_state' as state,
     loaded_at
-FROM raw_zone.olist_customers_raw;
+FROM raw_zone.olist_customers_dataset_raw;
 ```
 
 ## JSONB Operators Reference
@@ -182,7 +182,7 @@ SELECT
     COUNT(*) as total_records,
     MIN(loaded_at) as first_load,
     MAX(loaded_at) as last_load
-FROM raw_zone.olist_customers_raw
+FROM raw_zone.olist_customers_dataset_raw
 GROUP BY source_table;
 ```
 
@@ -199,7 +199,7 @@ SELECT
     data->>'customer_city' as city,
     data->>'customer_state' as state,
     loaded_at
-FROM raw_zone.olist_customers_raw;
+FROM raw_zone.olist_customers_dataset_raw;
 
 -- Query the normalized view
 SELECT * FROM processed_zone.customers LIMIT 10;
@@ -219,28 +219,3 @@ Custom transformations (processed_zone - business rules)
 final outputs (curated_zone - analytics-ready)
 ```
 
-## Troubleshooting
-
-**Q: How do I modify JSONB data?**
-```sql
-UPDATE raw_zone.olist_customers_raw
-SET data = jsonb_set(data, '{customer_state}', '"RJ"')
-WHERE raw_id = 1;
-```
-
-**Q: How do I export back to CSV?**
-```sql
-COPY (
-    SELECT 
-        raw_id,
-        jsonb_each(data)
-    FROM raw_zone.olist_customers_raw
-) TO '/tmp/export.csv' CSV HEADER;
-```
-
-**Q: Can I validate JSON structure?**
-```sql
-SELECT raw_id, data
-FROM raw_zone.olist_customers_raw
-WHERE NOT jsonb_typeof(data) = 'object';
-```

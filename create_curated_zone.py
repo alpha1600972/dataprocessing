@@ -453,5 +453,3 @@ def main():
     print("      → Implement slowly changing dimensions")
     print("\n")
 
-if __name__ == "__main__":
-    main()

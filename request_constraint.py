@@ -1,5 +1,4 @@
 from connect import get_db_engine, print_db_tables
-# from connect import print_db_tables
 import pandas as pd
 import sqlalchemy as sa
 import os
@@ -26,7 +25,7 @@ def constraint_table(engine, table_name, column_name, constraint_type='unique', 
         conn.commit()
         print(f"✓ Constraint '{constraint_name}' added to {schema_name}.{table_name}({column_name})")
 
-if __name__ == "__main__":
+def main():
     engine = get_db_engine()
     index_table(engine, 'olist_customers_dataset', 'customer_id')
     constraint_table(engine, 'olist_customers_dataset', 'customer_id', 'not_null')
@@ -45,6 +44,4 @@ if __name__ == "__main__":
     constraint_table(engine, 'olist_sellers_dataset', 'seller_id', 'not_null')
     constraint_table(engine, 'olist_sellers_dataset', 'seller_id', 'unique')
 
-
-    
     print_db_tables(engine)
