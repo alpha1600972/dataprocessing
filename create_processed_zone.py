@@ -925,7 +925,7 @@ def main():
     # Step 2: Process data from raw_zone
     print("\n[Step 2] Processing data from raw_zone...")
     create_customers_processed_table(engine, 'processed_zone')
-    # process_customers_from_raw(engine, 'raw_zone', 'processed_zone')
+    process_customers_from_raw(engine, 'raw_zone', 'processed_zone')
     
     create_products_processed_table(engine, 'processed_zone')
     process_products_from_raw(engine, 'raw_zone', 'processed_zone')
