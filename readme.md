@@ -106,8 +106,8 @@ docker compose version
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/alpha1600972/dataprocessin.git
-cd ecommerce-data-architecture
+git clone https://github.com/alpha1600972/dataprocessing.git
+cd dataprocessing
 ```
 
 ## 2. Configure environment variables
